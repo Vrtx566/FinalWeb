@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './sections/Home';
-import SecretEntrance from './sections/SecretEntrance';
-import SecretWeb from './sections/SecretWeb';
+import Donate from './sections/Donate.tsx';
+import SecretWeb from './sections/DashBoard.tsx';
 import './index.css';
 
 function App() {
@@ -10,8 +10,8 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/secret-entrance" element={<SecretEntrance />} />
-                <Route path="/secret-web" element={<SecretWeb />} />
+                <Route path="/donate" element={<Donate />} />
+                <Route path="/blackcross" element={<SecretWeb />} />
             </Routes>
         </Router>
     );
