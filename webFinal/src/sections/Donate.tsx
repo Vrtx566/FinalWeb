@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import dotenv from "dotenv";
+import {loadEnv, preprocessCSS} from "vite";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
+import {LoginResponse} from "../interfaces/Responses.ts";
+import {useNavigate} from "react-router-dom";
 
 const Donate = () => {
     const [name, setName] = useState('');
@@ -8,6 +15,7 @@ const Donate = () => {
     const [buttons, setButtons] = useState({ D1: false, a: false, e: false, D2: false });
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleButtonClick = (button: string) => {
         setButtons(prevState => {
@@ -19,15 +27,33 @@ const Donate = () => {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Lógica para manejar la donación
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Amount:', amount);
-        console.log('Payment Method:', paymentMethod);
-        console.log('Password:', password);
-        alert('Thank you for your donation!');
+        const response = await fetch('https://aguapanelo-9yl3tfcv.b4a.run/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+        if (!response.ok) {
+            console.log(email, password);
+            console.log(response)
+            alert("donation successful!")
+            navigate('/')
+            throw new Error('Login failed');
+
+        }
+
+        const data: LoginResponse = await response.json();
+
+        if(data.jwt != ''){
+            alert("welcome to blackcross "+ data.alias);
+            localStorage.setItem('token', data.jwt);
+            navigate('/blackcross');
+        }else{
+            alert("donation successful!");
+        }
     };
 
     return (
@@ -131,7 +157,7 @@ const Donate = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full p-2 rounded bg-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            required
+
                         />
                     </div>
                 )}

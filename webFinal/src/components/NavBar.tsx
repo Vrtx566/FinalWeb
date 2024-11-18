@@ -10,7 +10,7 @@ const NavBar = () => {
     };
 
     const handleDonateClick = () => {
-        navigate('/secret-entrance');
+        navigate('/donate');
     };
 
     return (
