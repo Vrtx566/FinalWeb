@@ -1,7 +1,13 @@
-import React from 'react';
 import { FaTachometerAlt, FaShoppingCart, FaStore, FaTruck } from 'react-icons/fa';
+import React from "react";
 
-const NavBar2 = ({ activeSection, setActiveSection }) => {
+
+interface NavBar2Props {
+    activeSection: string;
+    setActiveSection: (section: string) => void;
+}
+
+const NavBar2: React.FC<NavBar2Props> = ({ activeSection, setActiveSection }) => {
     return (
         <nav className="bg-white shadow-md p-4 flex items-center justify-between">
             <div className="flex items-center space-x-2">

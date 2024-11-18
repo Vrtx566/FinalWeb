@@ -7,13 +7,6 @@ export interface AuthResponse {
 }
 
 
-export interface LoginResponse {
-   alias: string;
-    email: string;
-    jwt: string;
-}
-
-
 export interface LoginResponse{
     user: User
 }

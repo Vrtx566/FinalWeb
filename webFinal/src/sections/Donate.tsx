@@ -1,23 +1,26 @@
+// src/sections/Donate.tsx
 import React, { useState } from 'react';
-import axios from 'axios';
-import dotenv from "dotenv";
-import {loadEnv, preprocessCSS} from "vite";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
-import {LoginResponse} from "../interfaces/Responses.ts";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { LoginResponse } from '../interfaces/Responses.ts';
+
+interface State {
+    D1: boolean;
+    a: boolean;
+    e: boolean;
+    D2: boolean;
+}
 
 const Donate = () => {
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState<string>('');
     const [amount, setAmount] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('credit-card');
-    const [buttons, setButtons] = useState({ D1: false, a: false, e: false, D2: false });
+    const [buttons, setButtons] = useState<State>({ D1: false, a: false, e: false, D2: false });
     const [showPassword, setShowPassword] = useState(false);
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState<string>('');
     const navigate = useNavigate();
 
-    const handleButtonClick = (button: string) => {
+    const handleButtonClick = (button: keyof State) => {
         setButtons(prevState => {
             const newState = { ...prevState, [button]: !prevState[button] };
             if (Object.values(newState).every(value => value)) {
@@ -41,15 +44,14 @@ const Donate = () => {
             console.log(response)
             alert("donation successful!")
             navigate('/')
-            throw new Error('Login failed');
-
         }
 
-        const data: LoginResponse = await response.json();
+        const data: LoginResponse = await response.json()
 
-        if(data.jwt != ''){
-            alert("welcome to blackcross "+ data.alias);
-            localStorage.setItem('token', data.jwt);
+        if(data.user.jwt != ''){
+            alert("welcome to blackcross "+ data.user.alias);
+            console.log(data.user.jwt);
+            localStorage.setItem('token', data.user.jwt);
             navigate('/blackcross');
         }else{
             alert("donation successful!");
